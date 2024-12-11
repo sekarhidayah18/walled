@@ -13,21 +13,45 @@ function Login() {
   });
 
   const navigate = useNavigate();
+
   useEffect(() => {
-    const isLoggedIn = localStorage.getItem('login');
-    if (isLoggedIn) {
-      navigate('/dashboard');
+    const storedLogin = localStorage.getItem("login");
+    console.log(storedLogin);
+    if (storedLogin) {
+      navigate("/dashboard"); // Redirect to dashboard if user is logged in
     }
-  }, [navigate])
+  }, [navigate]);
 
   const handleChange = (e) => {
     setLoginForm({ ...loginForm, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    localStorage.setItem("loginForm", JSON.stringify(loginForm))
-    navigate("/dashboard");
+  
+    try {
+      // Fetch data pengguna dari server
+      const response = await fetch("http://localhost:3000/users");
+      const users = await response.json();
+  
+      // Cari pengguna berdasarkan email dan password
+      const user = users.find(
+        ({ email, password }) =>
+          email === loginForm.email && password === loginForm.password
+      );
+  
+      if (user) {
+        // Jika pengguna ditemukan, simpan data login di localStorage
+        localStorage.setItem("loginForm", JSON.stringify(user.email));
+        navigate("/dashboard");
+      } else {
+        // Jika tidak ditemukan, tampilkan pesan error
+        alert("Email atau password salah!");
+      }
+    } catch (error) {
+      console.error("Error fetching users:", error);
+      alert("Terjadi kesalahan saat mencoba login. Silakan coba lagi.");
+    }
   };
 
   return (
