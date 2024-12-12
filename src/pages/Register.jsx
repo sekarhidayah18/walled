@@ -1,57 +1,27 @@
-
 import { Link } from "react-router";
 import loginBg from "../assets/cover.png";
 import logo from "../assets/logo.png";
-import { useEffect, useState } from "react";
-import ActionButton from "../components/ActionButton.jsx";
+import { useState } from "react";
 import { useNavigate } from "react-router";
+import ActionButton from "../components/ActionButton";
 
-function Login() {
+function Daftar() {
   const [loginForm, setLoginForm] = useState({
     email: "",
     password: "",
+    namaLengkap: "",
+    noHp: "",
   });
 
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const storedLogin = localStorage.getItem("login");
-    console.log(storedLogin);
-    if (storedLogin) {
-      navigate("/dashboard"); // Redirect to dashboard if user is logged in
-    }
-  }, [navigate]);
 
   const handleChange = (e) => {
     setLoginForm({ ...loginForm, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-
-    try {
-      // Fetch data pengguna dari server
-      const response = await fetch("http://localhost:3000/users");
-      const users = await response.json();
-
-      // Cari pengguna berdasarkan email dan password
-      const user = users.find(
-        ({ email, password }) =>
-          email === loginForm.email && password === loginForm.password
-      );
-
-      if (user) {
-        // Jika pengguna ditemukan, simpan data login di localStorage
-        localStorage.setItem("loginForm", JSON.stringify({ email: user.email }));
-        navigate("/dashboard");
-      } else {
-        // Jika tidak ditemukan, tampilkan pesan error
-        alert("Email atau password salah!");
-      }
-    } catch (error) {
-      console.error("Error fetching users:", error);
-      alert("Terjadi kesalahan saat mencoba login. Silakan coba lagi.");
-    }
+    navigate("/login");
   };
 
   return (
@@ -62,8 +32,15 @@ function Login() {
           <form className="flex flex-col mt-24 gap-y-5">
             <input
               className="bg-[#FAFBFD] pl-7 py-4 min-w-[400px] rounded-[10px] text-black"
-              name="email"
-              type="email"
+              name="Nama"
+              type="Nama"
+              placeholder="Nama"
+              onChange={(e) => handleChange(e)}
+            />
+            <input
+              className="bg-[#FAFBFD] pl-7 py-4 min-w-[400px] rounded-[10px] text-black"
+              name="Email"
+              type="Email"
               placeholder="Email"
               onChange={(e) => handleChange(e)}
             />
@@ -74,17 +51,25 @@ function Login() {
               placeholder="Password"
               onChange={(e) => handleChange(e)}
             />
+            <input
+              className="bg-[#FAFBFD] pl-7 py-4 min-w-[400px] rounded-[10px] text-black"
+              name="No Hp"
+              type="No Hp"
+              placeholder="No Hp"
+              onChange={(e) => handleChange(e)}
+            />
             <ActionButton
-              disabled={!loginForm.email || !loginForm.password}
+              disabled={!loginForm.email && !loginForm.namaLengkap && !loginForm.password && !loginForm.noHp}
               onClick={handleSubmit}
             >
-              Login
+              Register
             </ActionButton>
           </form>
           <div className="w-full mt-4 text-black">
-            Belum punya akun?{" "}
-            <Link to="/register" className="text-[#19918F] text-left">
-              Daftar di sini
+            Sudah punya akun?{" "}
+
+            <Link to="/login" className="text-[#19918F] text-left">
+              Login di sini
             </Link>
           </div>
         </div>
@@ -98,4 +83,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default Daftar;

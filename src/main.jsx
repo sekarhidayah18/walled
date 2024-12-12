@@ -7,16 +7,18 @@ import Transfer from './pages/Transfer.jsx'
 import Login from './pages/Login.jsx'
 import DashboardLayout from './pages/DashboardLayout.jsx'
 import NotFound from "./pages/NotFound.jsx";
+import Daftar from './pages/Register.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
       <Routes>
-        <Route index element={<Login />} />
+        <Route path='/login' element={<Login />} />
         <Route element={<DashboardLayout />}>
           <Route path="/dashboard" element={<App />} />
           <Route path="/transfer" element={<Transfer />} />
         </Route>
+        <Route path='/register' element={<Daftar />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>

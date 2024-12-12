@@ -112,7 +112,7 @@
     
     "users": [
         {
-            "id": "1",
+            "id": "100899",
             "email": "john.doe@example.com",
             "username": "johndoe",
             "fullName": "John Doe",
@@ -120,7 +120,7 @@
             "balance": 5000000
         },
         {
-            "id": "2",
+            "id": "100900",
             "email": "jane.smith@example.com",
             "username": "janesmith",
             "name": "Jane Smith",
@@ -128,12 +128,20 @@
             "balance": 7500000
         },
         {
-            "id": "3",
+            "id": "100901",
             "email": "alice.jones@example.com",
             "username": "alicejones",
             "name": "Alice Jones",
             "password": "alice2023",
             "balance": 1200000
+        },
+        {
+            "id": "100902",
+            "email": "sekarhidayah@gmail.com",
+            "username": "sekarhidyh",
+            "name": "Sehoy",
+            "password": "hay2025",
+            "balance": 100000000
         }
     ]
 }

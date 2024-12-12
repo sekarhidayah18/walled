@@ -3,7 +3,7 @@ import avatarImg from "../assets/avatar.png";
 
 function Avatar() {
   const [isAvatarActive, setIsAvatarActive] = useState(false);
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState({});
   useEffect(() => {
     async function getData() {
       const url = "http://localhost:3000/users";
@@ -13,8 +13,11 @@ function Avatar() {
           throw new Error(`Response status: ${response.status}`);
         }
         const json = await response.json();
-        setUsers(json);
-        console.log(json);
+        let local = localStorage.getItem('loginForm');
+        local = JSON.parse(local);
+        const findUser = json.find(user => user.email === local.email);
+        setUsers(findUser);
+        console.log(local);
       } catch (error) {
         console.error(error.message);
       }
@@ -25,7 +28,7 @@ function Avatar() {
   return (
     <div className="flex items-center gap-x-4 ml-auto">
       <span className="text-right">
-        <p className="text-black font-bold">{`${users[0]?.fullName}`}</p>
+        <p className="text-black font-bold">{`${users?.name}`}</p>
         <p className="text-black">Personal Account</p>
       </span>
       <div

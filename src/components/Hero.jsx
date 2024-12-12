@@ -4,11 +4,12 @@ import viewIcon from "../assets/view.png";
 import Send from "../assets/send.png";
 import Add from "../assets/add.png";
 import TableComponent from "../components/Table";
+import Daftar from "../pages/Register";
 
 
 function Hero() {
   const [showBalance, setShowBalance] = useState(true);
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState({});
   useEffect(() => {
     async function getData() {
       const url = "http://localhost:3000/users";
@@ -17,9 +18,13 @@ function Hero() {
         if (!response.ok) {
           throw new Error(`Response status: ${response.status}`);
         }
+        let local = localStorage.getItem('loginForm');
+        local = JSON.parse(local);
+        console.log(local);
         const json = await response.json();
-        setUsers(json);
-        console.log(json);
+        const findUser = json.find(user => user.email === local.email);
+        setUsers(findUser);
+        console.log(users);
       } catch (error) {
         console.error(error.message);
       }
@@ -32,7 +37,7 @@ function Hero() {
       <div className="flex items-center justify-center">
         <div className="mr-auto">
           <h1 className="text-black text-6xl font-bold">
-            {`Good Morning, ${users[0]?.fullName}!`}
+            {`Good Morning, ${users?.name}!`}
           </h1>
           <p className="text-black text-2xl mt-3">
             Check all your incoming and outgoing transactions here
@@ -43,13 +48,13 @@ function Hero() {
       <div className="flex mt-[4.5rem] gap-x-12">
         <div className="bg-[#19918F] p-12 rounded-2xl w-1/5">
           <p>Account No.</p>
-          <p className="mt-3 font-bold">100899</p>
+          <p className="mt-3 font-bold">{`${users?.id}`}</p>
         </div>
         <div className="bg-white p-12 rounded-2xl w-full text-black">
           <p>Balance</p>
           <span className="flex items-center mt-3 gap-x-2">
             <p className="font-bold">
-              {showBalance ? "Rp10.000.000,00" : "Rp ****"}
+              {showBalance ? `Rp${users?.balance?.toLocaleString("id-ID")},00` : "Rp ****"}
             </p>
             <img
               src={viewIcon}
